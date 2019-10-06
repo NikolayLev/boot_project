@@ -32,6 +32,7 @@ public class SignUpServiceImpl implements SignUpService {
                 .lastName(userForm.getLastName())
                 .state(State.ACTIVE)
                 .role(Role.USER)
+                .uploadPhoto("bd027e654c2fbb9f100e372dc2156d4d.jpg")
                 .build();
         usersRepository.save(user);
         return true;

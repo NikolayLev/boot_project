@@ -16,7 +16,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <div class= "container mt-1">
         <div class="form-style-2-heading">
-        Please Login!
+            Пожалуйста, авторизуйтесь!
+        <a href="/signUp"> Регистрация.</a>
     </div>
         <#if error??>
             <br>
@@ -24,7 +25,7 @@
         </#if>
     </div>
 <form method="post" action="/login">
-<div class= "container mt-3">
+<div class= "container mt-1">
         <div class="form-group row">
 
             <label for="login" class="col-sm-1 col-form-label">Логин </label>

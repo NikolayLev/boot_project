@@ -9,26 +9,26 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent" >
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/uploadForm">UploadForm</a>
+                <a class="nav-link" href="/uploadForm">Профиль</a>
             </li>
             <#if isAdmin>
             <li class="nav-item">
                 <a class="nav-link" href="/adminPage">adminPage</a>
             </li>
             </#if>
-            <li class="nav-item">
-                <a class="nav-link" href="/signUp">SignUp</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
-            </li>
+
+
         </ul>
-        <div class="navbar-text mr-3"> ${name} </div>
+        <div class="navbar-text mr-3">
+            <#if image??>
+                <img src="/img/${image}" width="36" height="24" class="rounded"
+                     alt="profile image">
+            </#if>
+            ${name}
 
-            <form class="form-inline" action="/logout" method="post">
-            <button class="btn btn-sm btn-outline-secondary mt-1" type="submit">Sign Out</button>
+            <a href="/logout" class="btn btn-sm btn-outline-secondary" role="buton">Logout</a></div>
 
-            </form>
+
 
 
     </div>

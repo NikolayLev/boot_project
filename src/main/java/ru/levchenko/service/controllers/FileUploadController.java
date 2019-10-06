@@ -2,39 +2,40 @@ package ru.levchenko.service.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import ru.levchenko.service.models.User;
+import ru.levchenko.service.repositories.UsersRepository;
 import ru.levchenko.service.security.details.UserDetailsImpl;
 import ru.levchenko.service.services.UploadFormService;
 
+import java.util.Map;
 
 
 @Controller
 public class FileUploadController {
 
-
+    UsersRepository usersRepository;
     UploadFormService uploadFormService;
 
     @Autowired
-    public FileUploadController(UploadFormService uploadFormService) {
+    public FileUploadController(UploadFormService uploadFormService, UsersRepository usersRepository) {
         this.uploadFormService = uploadFormService;
-        }
+        this.usersRepository = usersRepository;
+    }
 
 
     @GetMapping("/uploadForm")
     public String listUploadedFiles(Model model) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
-        if (user!=null) {
+        if (user != null) {
+            model.addAttribute("user1", user);
             if (user.getUploadPhoto() != null) {
                 model.addAttribute("image", user.getUploadPhoto());
             }
@@ -43,21 +44,26 @@ public class FileUploadController {
     }
 
 
-
     @PostMapping("/uploadForm")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+                                   @RequestParam Map<String, String> form) {
+
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
-        uploadFormService.store(file,user);
+        if (user != null) {
+            user.setFirstName(form.get("firstName"));
+            user.setLastName(form.get("lastName"));
+            if(!file.isEmpty()){
+            uploadFormService.store(file, user);
+        }else {
+            usersRepository.save(user);
 
-
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
-
-        return "redirect:/";
+            }
+        }
+        return "redirect:/uploadForm";
     }
 
 
-    }
+
+}
 
