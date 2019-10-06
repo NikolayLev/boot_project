@@ -6,16 +6,16 @@
 
 .form-style-2-heading {
     font-weight: bold;
-    font-style: italic;
+    font-style: normal;
     border-bottom: 2px solid #ddd;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     font-size: 15px;
     padding-bottom: 3px;
 }
 
 .form-style-2 label {
     display: block;
-    margin: 0px 0px 15px 0px;
+    margin: 0px 0px 5px 0px;
 }
 
 .form-style-2 label > span {

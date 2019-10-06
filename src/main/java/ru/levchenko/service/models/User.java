@@ -38,5 +38,12 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private List<Product> productList;
 
+    public boolean isAdmin(){
+        if (getRole().name().equals(Role.ADMIN.name())){
+            return true;
+        }
+        return false;
+    }
+
 
 }
