@@ -6,11 +6,22 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" >
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/uploadForm">Профиль</a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/adsPage">Мои объявления</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/adsPage/create">Подать объявление</a>
+            </li>
+
+
+
+
             <#if isAdmin>
             <li class="nav-item">
                 <a class="nav-link" href="/adminPage">adminPage</a>
@@ -21,7 +32,7 @@
         </ul>
         <div class="navbar-text mr-3">
             <#if image??>
-                <img src="/img/${image}" width="36" height="24" class="rounded"
+                <img src="/img/${image}" width="24" height="24" class="rounded"
                      alt="profile image">
             </#if>
             ${name}

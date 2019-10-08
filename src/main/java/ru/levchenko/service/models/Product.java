@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,8 +27,17 @@ public class Product {
     @Column(name = "description")
     private String description;//описание товара
     //Добавить класс дата для отображенния времени добавления товара
+    @Column(name = "file_name")
     private String fileName;//путь к фото товара(добавить отдельную табличку под файлы)
+    @Basic
+    private Date date;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductImages> imageList;
+
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
+
+
 }
