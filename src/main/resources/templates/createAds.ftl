@@ -52,25 +52,24 @@
             <form method="POST" enctype="multipart/form-data" action="/adsPage/create">
 
                 <div class="form-group row pt-3">
-                    <label for="inputPassword" class="col-sm-3 col-form-label">Название</label>
+                    <label for="name" class="col-sm-3 col-form-label">Название</label>
                     <div class="col">
-                        <input type="text" class="form-control" id="inputPassword" placeholder="Введите название для объявления">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Введите название для объявления">
                     </div>
                 </div>
                 <div class="form-group row pt-1">
                     <label for="price" class="col-sm-3 col-form-label">Цена</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" id="price" placeholder="Цена">
+                        <input type="text" class="form-control" name="price" id="price" placeholder="Цена">
                     </div>
                 </div>
                 <div class="form-group pt-1">
-                    <label for="exampleFormControlTextarea1">Описание для товара</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"
+                    <label for="description">Описание для товара</label>
+                    <textarea class="form-control" id="description" rows="3" name="description"
                               placeholder="Описание товара"></textarea>
                 </div>
 
                 <div class="container">
-
                     <div class="row"><label>Загрузить изображение : </label><input type="file" id="file" name="file"/>
                         <button type="submit" class="btn ml-auto btn-primary">Изменить</button></div>
                     <div class="row"><span id="output"></span></div>

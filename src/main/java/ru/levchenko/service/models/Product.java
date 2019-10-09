@@ -32,9 +32,6 @@ public class Product {
     @Basic
     private Date date;
 
-    @OneToMany(mappedBy = "product")
-    private List<ProductImages> imageList;
-
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;

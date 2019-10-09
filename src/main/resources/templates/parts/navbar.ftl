@@ -32,7 +32,7 @@
         </ul>
         <div class="navbar-text mr-3">
             <#if image??>
-                <img src="/img/${image}" width="24" height="24" class="rounded"
+                <img src="/img/${image}" width="auto" height="24" class="rounded"
                      alt="profile image">
             </#if>
             ${name}
