@@ -33,17 +33,34 @@
     <div class="col-sm-4">
 
         <label>
-            <a href="/adsPage">Активные объявления:</a> Активные>
+            <a href="/adsPage/active">Активные объявления:</a> Активные>
         </label>
         <label>
-            <a href="/adsPage">Закрытые объявления:</a> Закрытые
+            <a href="/adsPage/delete">Закрытые объявления:</a> Закрытые
         </label>
 
 
 </div>
 <div class="col-sm-8">
-    ASDASDASDASDASDASDASDASDADASDASDADSADASDASSDASD
+
+    <#if productList??>
+        <#list productList as product>
+
+        <button type="button" class="btn btn-secondary btn btn-block">${product.name}</button>
+            <img src="/img/product/${product.fileName}" class="img-fluid rounded mx-auto d-block" alt="Responsive image">
+
+        <div  class="border border-secondary">
+            <p class="font-weight-bolder">Описание:</p>
+            <span style="white-space: pre-line">${product.description}</span></div>
+
+            <p class="font-weight-bolder mt-2"> Цена: ${product.price}руб. </p>
+            <p class="text-right">${product.date}</p>
+        </#list>
+            <#else>
+        ${message}
+        </#if>
 </div>
+
     </div>
 </div>
 </body>

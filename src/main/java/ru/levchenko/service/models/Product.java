@@ -32,6 +32,9 @@ public class Product {
     @Basic
     private Date date;
 
+    @Enumerated(value = EnumType.STRING)
+    private State status;
+
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
