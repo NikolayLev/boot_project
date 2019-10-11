@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.levchenko.service.models.Product;
 import ru.levchenko.service.models.State;
@@ -20,6 +17,7 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/adsPage")
@@ -47,7 +45,7 @@ public class adsPageController {
     }
 
     @GetMapping("active")
-    public String getActivePage(Model model){
+    public String getActivePage(Model model) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
 
@@ -59,20 +57,29 @@ public class adsPageController {
         }
         return "adsPage";
     }
+
     @GetMapping("delete")
-    public String getDeletePage(Model model){
-        
+    public String getDeletePage(Model model) {
+
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
 
         List<Product> productList = productsRepository.findAllByStatusAndOwner(State.DELETED, user);
-
+        model.addAttribute("message", "Нет закрытых объявлений");
         if (!productList.isEmpty()) {
             model.addAttribute("productList", productList);
-            model.addAttribute("message", "Нет закрытых объявлений");
         }
         return "adsPage";
     }
+    @PostMapping("delete/{id}")
+    public String createPr31uct(@PathVariable(value = "id") Long id) {
+        Optional<Product> productCandidate = productsRepository.findById(id);
+        Product product = productCandidate.orElseThrow(IllegalArgumentException::new);
+        product.setStatus(State.DELETED);
+        productsRepository.save(product);
+        return "redirect:/adsPage";
+    }
+
 
 
     @GetMapping("create")
@@ -82,18 +89,30 @@ public class adsPageController {
 
 
     @PostMapping("create")
-    public String createProduct(@RequestParam("file") MultipartFile file,
+    public String createProduct(@RequestParam(value = "id", required = false) Long id,
+                                @RequestParam("file") MultipartFile file,
                                 @RequestParam Map<String, String> form) {
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userDetails.getUser();
+        int price = Integer.parseInt(form.get("price"));
 
-        if (user != null) {
+        Product product = new Product();
 
-            int price = Integer.parseInt(form.get("price"));
-            //добавить ошибку если ввели не число
+        if (id != null) {
 
-            Product product = Product.builder()
+            product = productsRepository.getOne(id);
+            product.setDescription(form.get("description"));
+            product.setName(form.get("name"));
+            product.setPrice(price);
+
+        } else {
+
+            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userDetails.getUser();
+
+            if (user == null) {
+                return "redirect:/adsPage";
+            }
+            product = Product.builder()
                     .name(form.get("name"))
                     .description(form.get("description"))
                     .price(price)
@@ -101,19 +120,31 @@ public class adsPageController {
                     .status(State.ACTIVE)
                     .date(new Date(Calendar.getInstance().getTime().getTime()))
                     .build();
-
-
-            if (!file.isEmpty()) {
-                createAdsService.update(file, product);
-                return "redirect:/adsPage";
-            } else {
-
-                productsRepository.save(product);
-                return "redirect:/adsPage";
-
-            }
         }
 
-        return "redirect:/adsPage";
+        if (!file.isEmpty()) {
+            createAdsService.update(file, product);
+            return "redirect:/adsPage";
+        } else {
+            productsRepository.save(product);
+            return "redirect:/adsPage";
+        }
+    }
+
+
+
+
+    @GetMapping("edit/{product-id}")
+    public String editPage(@PathVariable("product-id") Long productId, Model model){
+
+        Optional<Product> productCandidate = productsRepository.findById(productId);
+        if(productCandidate.isPresent()){
+            Product product = productCandidate.get();
+            model.addAttribute("product", product);
+            return "editPage";
+        }else {
+            return "redirect:/adsPage";
+        }
+
     }
 }

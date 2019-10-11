@@ -31,7 +31,7 @@ public class ProfileUploadController {
     }
 
 
-    @GetMapping("/uploadForm")
+    @GetMapping("/profile")
     public String listUploadedFiles(Model model) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
@@ -41,11 +41,11 @@ public class ProfileUploadController {
                 model.addAttribute("image", user.getUploadPhoto());
             }
         }
-        return "uploadForm";
+        return "profile";
     }
 
 
-    @PostMapping("/uploadForm")
+    @PostMapping("/profile")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    @RequestParam Map<String, String> form) {
 
@@ -61,7 +61,7 @@ public class ProfileUploadController {
 
             }
         }
-        return "redirect:/uploadForm";
+        return "redirect:/profile";
     }
 
 

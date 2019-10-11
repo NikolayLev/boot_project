@@ -1,7 +1,7 @@
 <#ftl encoding='UTF-8'>
 <#import "parts/navbar.ftl" as n>
 
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -36,7 +36,7 @@
 </div>
 
 <div class="container">
-    <div class= "row">
+    <div class="row">
         <div class="col-sm-4">
 
             <label>
@@ -49,37 +49,55 @@
 
         </div>
         <div class="col-lg">
-            <form method="POST" enctype="multipart/form-data" action="/adsPage/create">
+            <form method="POST" enctype="multipart/form-data" action="/adsPage/create?id=${product.id}">
                 <input type="text" hidden name="error"/>
-
+                <img src="/img/product/${product.fileName}" class="img-fluid rounded mx-auto d-block pt-2"
+                     alt="Responsive image">
                 <div class="form-group row pt-3">
                     <label for="name" class="col-sm-3 col-form-label">Название</label>
                     <div class="col">
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Введите название для объявления">
+
+                        <input type="text" class="form-control" name="name" id="name" value="${product.name}"
+                               placeholder="Введите название для объявления">
                     </div>
                 </div>
                 <div class="form-group row pt-1">
                     <label for="price" class="col-sm-3 col-form-label">Цена</label>
                     <div class="col-sm-3">
-                        <input type="number" min="0" class="form-control" name="price" id="price" placeholder="Цена">
+                        <input type="number" min="0" class="form-control" name="price"
+                               value="${product.price?string.computer}" id="price" placeholder="Цена">
                     </div>
                 </div>
                 <div class="form-group pt-1">
                     <label for="description">Описание для товара</label>
                     <textarea class="form-control" id="description" rows="9" name="description"
-                              placeholder="Описание товара"></textarea>
+                              placeholder="Описание товара">${product.description}</textarea>
                 </div>
 
                 <div class="container">
+
                     <div class="row"><label>Загрузить изображение : </label><input type="file" id="file" name="file"/>
-                        <button type="submit" class="btn ml-auto btn-primary">Создать</button></div>
-                    <div class="row"><span id="output"></span></div>
+                        <button type="submit" class="btn ml-auto btn-primary">Изменить</button>
+
+                    </div>
+                </div>
+            </form>
+
+            <form action="/adsPage/delete/${product.id}" method="post">
+                <div class="container">
+                    <div class="row">
+
+                        <button type="submit" class="btn ml-auto btn-primary">Удалить</button>
+                    </div>
+                    <span id="output"></span>
 
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
 <script>
     function handleFileSelectSingle(evt) {
         var file = evt.target.files; // FileList object
@@ -90,7 +108,7 @@
         if (!f.type.match('image.*')) {
             alert("Только изображения....");
             document.getElementById('file').value = null;
-            document.getElementById('output').innerHTML="";
+            document.getElementById('output').innerHTML = "";
         } else {
 
             var reader = new FileReader();

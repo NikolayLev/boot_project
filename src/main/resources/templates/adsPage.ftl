@@ -46,10 +46,14 @@
     <#if productList??>
         <#list productList as product>
 
-        <button type="button" class="btn btn-secondary btn btn-block">${product.name}</button>
+            <a href="/adsPage/edit/${product.id}" class="btn btn-secondary btn btn-block">
+                <i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> ${product.name}
+            </a>
+            <#if product.fileName??>
             <img src="/img/product/${product.fileName}" class="img-fluid rounded mx-auto d-block" alt="Responsive image">
+    </#if>
 
-        <div  class="border border-secondary">
+    <div  class="border border-secondary">
             <p class="font-weight-bolder">Описание:</p>
             <span style="white-space: pre-line">${product.description}</span></div>
 
@@ -57,7 +61,7 @@
             <p class="text-right">${product.date}</p>
         </#list>
             <#else>
-        ${message}
+                ${message}
         </#if>
 </div>
 
