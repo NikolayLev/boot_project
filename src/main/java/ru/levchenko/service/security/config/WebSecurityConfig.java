@@ -36,24 +36,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/").authenticated()
-                    .antMatchers("/signUp/**").permitAll()
-                    .antMatchers("/uploadForm/**").authenticated()
-                    .antMatchers("/adsPage/**").authenticated()
+                .antMatchers("/").authenticated()
+                .antMatchers("/signUp/**").permitAll()
+                .antMatchers("/uploadForm/**").authenticated()
+                .antMatchers("/adsPage/**").authenticated()
+                .antMatchers("/activate/**").permitAll()
                 .and().formLogin()
-                    .usernameParameter("login")
-                    .passwordParameter("password")
-                    .defaultSuccessUrl("/")
-                    .failureUrl("/login?error")
-                    .loginPage("/login")
-                    .permitAll()
-                 .and().rememberMe()
-                    .rememberMeParameter("remember-me")
-                    .tokenRepository(tokenRepository())
-                 .and()
-                     .logout()
-                      .logoutUrl("/logout")
-                     .permitAll();
+                .usernameParameter("login")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/")
+                .failureUrl("/login?error")
+                .loginPage("/login")
+                .permitAll()
+                .and().rememberMe()
+                .rememberMeParameter("remember-me")
+                .tokenRepository(tokenRepository())
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .permitAll();
         http.csrf().disable();
 
 

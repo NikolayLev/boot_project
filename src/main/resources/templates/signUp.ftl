@@ -38,6 +38,13 @@
                     <input class="form-control" type="text" id="login" name="login">
                 </div>
             </div>
+            <div class="form-group row">
+
+                <label for="email" class="col-sm-1 col-form-label">Email </label>
+                <div class="col-lm-5">
+                    <input class="form-control" type="email" id="email" name="email">
+                </div>
+            </div>
 
             <div class="form-group row">
 
@@ -70,15 +77,7 @@
         </div>
     </form>
 </div>
-    </form>
 
-
-
-
-
-
-
-    </form>
 </div>
 </div>
 </body>

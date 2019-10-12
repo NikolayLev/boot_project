@@ -29,6 +29,10 @@ public class User {
     private String lastName;
     @Column(name = "uploadphoto")
     private String uploadPhoto;//путь к аватару юзера(скинуть в отдельную СУБД все файлы)
+    private String email;
+    private String activationCode;
+    private boolean activated;
+
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
