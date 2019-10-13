@@ -19,9 +19,10 @@
             Пожалуйста, авторизуйтесь!
         <a href="/signUp"> Регистрация.</a>
     </div>
-        <#if error??>
-            <br>
-            <div class="alert alert-danger" role="alert">Логин или пароль введены неверно</div>
+
+        <#if message??>
+
+            <div class="alert alert-danger" role="alert">${message}</div>
         </#if>
     </div>
 <form method="post" action="/login">

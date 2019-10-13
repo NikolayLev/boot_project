@@ -8,9 +8,12 @@ import ru.levchenko.service.models.State;
 import ru.levchenko.service.models.User;
 import ru.levchenko.service.repositories.UsersRepository;
 import ru.levchenko.service.security.forms.UserForm;
+import ru.levchenko.service.services.email.EmailSender;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class SignUpServiceImpl implements SignUpService {
@@ -20,6 +23,8 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    EmailSender emailSender;
 
     public boolean signUp(UserForm userForm) {
         if (findByUserName(userForm.getLogin()).isPresent()) {
@@ -31,7 +36,7 @@ public class SignUpServiceImpl implements SignUpService {
                 .hashPassword(passwordEncoder.encode(userForm.getPassword()))
                 .firstName(userForm.getFirstName())
                 .lastName(userForm.getLastName())
-                .state(State.BANNED)
+                .state(State.ACTIVE)
                 .role(Role.USER)
                 .uploadPhoto("bd027e654c2fbb9f100e372dc2156d4d.jpg")
                 .activationCode(UUID.randomUUID().toString())
@@ -47,23 +52,29 @@ public class SignUpServiceImpl implements SignUpService {
                 user.getActivationCode()
         );
 
+        emailSender.send(user.getEmail(),"Registration", message);
+
         return true;
 
     }
 
     @Override
     public boolean checkEmail(String email) {
-        return false;
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        return email.matches(pattern.pattern());
     }
 
     @Override
     public boolean checkLogin(String login) {
-        return false;
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9]{4,16}");
+        return login.matches(pattern.pattern());
     }
 
     @Override
     public boolean checkPassword(String password) {
-        return false;
+        Pattern pattern = Pattern.compile("[._a-zA-Z0-9!#$@%&,:;'\"'*+-/=?^_`{|}~\\.]{8,16}");
+        return password.matches(pattern.pattern());
     }
 
     @Override

@@ -15,8 +15,10 @@ public class LoginController {
             return "redirect:/";
         }
         if (request.getParameterMap().containsKey("error")) {
-            model.addAttribute("error", true);
+            model.addAttribute("message", "Логин или пароль введены неверно");
+            return "login";
         }
+
         return "login";
     }
 

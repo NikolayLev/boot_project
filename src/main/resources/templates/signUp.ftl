@@ -31,26 +31,35 @@
     <form method="post" action="/signUp">
 
         <div class= "container mt-3">
+            <#if invalidLogin??>
+                <div class="alert alert-danger" role="alert">Логин введен некорректно. Введите от 4 до 16 символов(Английские буквы, цифры</div>
+                <br>
+            </#if>
             <div class="form-group row">
-
                 <label for="login" class="col-sm-1 col-form-label">Логин </label>
                 <div class="col-lm-5">
-                    <input class="form-control" type="text" id="login" name="login">
+                    <input class="form-control" type="text" id="login" placeholder="от 4 до 16 Английский букв и цифр" name="login">
                 </div>
             </div>
+            <#if invalidEmail??>
+                <div class="alert alert-danger" role="alert">Email введен некорректно</div>
+
+            </#if>
             <div class="form-group row">
 
                 <label for="email" class="col-sm-1 col-form-label">Email </label>
                 <div class="col-lm-5">
-                    <input class="form-control" type="email" id="email" name="email">
+                    <input class="form-control" type="email" placeholder="Введите ваш емейл" id="email" name="email">
                 </div>
             </div>
-
+            <#if invalidPassword??>
+                <div class="alert alert-danger" role="alert">Пароль введен некорректно. Введите от 8 до 16 символов(Английские буквы, цифры, символы)</div>
+                <br>
+            </#if>
             <div class="form-group row">
-
                 <label for="password" class="col-sm-1 col-form-label">Пароль</label>
                 <div class="col-lm-5">
-                    <input class="form-control" type="password" id="password" name="password">
+                    <input class="form-control" type="password" placeholder="Введите пароль" id="password" name="password">
                 </div>
             </div>
 

@@ -38,8 +38,8 @@ public class adsPageController {
 
         if (!productList.isEmpty()) {
             model.addAttribute("productList", productList);
-            model.addAttribute("message", "Нет активных объявлений");
         }
+        model.addAttribute("message", "Нет активных объявлений");
         return "adsPage";
 
     }
@@ -53,8 +53,8 @@ public class adsPageController {
 
         if (!productList.isEmpty()) {
             model.addAttribute("productList", productList);
-            model.addAttribute("message", "Нет активных объявлений");
         }
+        model.addAttribute("message", "Нет активных объявлений");
         return "adsPage";
     }
 
@@ -72,7 +72,7 @@ public class adsPageController {
         return "adsPage";
     }
     @PostMapping("delete/{id}")
-    public String createPr31uct(@PathVariable(value = "id") Long id) {
+    public String createProduct(@PathVariable(value = "id") Long id) {
         Optional<Product> productCandidate = productsRepository.findById(id);
         Product product = productCandidate.orElseThrow(IllegalArgumentException::new);
         product.setStatus(State.DELETED);

@@ -26,11 +26,32 @@ public class SignUpController {
 
     @PostMapping("/signUp")
     public String signUp(UserForm userForm, Map<String, Object> model) {
+        boolean formWriteIn = true;
+
+        if(!service.checkLogin(userForm.getLogin())){
+            formWriteIn = false;
+            model.put("invalidLogin", true);
+        }
+
+        if (!service.checkPassword(userForm.getPassword())){
+            formWriteIn = false;
+            model.put("invalidPassword", true);
+        }
+        if(!service.checkEmail(userForm.getEmail())){
+            formWriteIn = false;
+            model.put("invalidEmail", true);
+        }
+        if(!formWriteIn){
+            return "signUp";
+        }
+
+
         if (!service.signUp(userForm)) {
             model.put("message", "User с таким логином уже есть в базе");
             return "signUp";
         }
-        return "/login";
+        model.put("message", "Проверьте ваш емейл");
+        return "login";
     }
 
     @GetMapping("/activate/{code}")
@@ -41,6 +62,7 @@ public class SignUpController {
         } else {
             model.addAttribute("message", "Error, activation code not found");
         }
+        model.addAttribute("message", "Ваш аккаунт активирован");
         return "login";
 
     }

@@ -19,9 +19,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "login")
+    @Column(name = "login", nullable = false)
     private String login;
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String hashPassword;
     @Column(name = "first_name")
     private String firstName;
@@ -29,8 +29,10 @@ public class User {
     private String lastName;
     @Column(name = "uploadphoto")
     private String uploadPhoto;//путь к аватару юзера(скинуть в отдельную СУБД все файлы)
+    @Column(nullable = false)
     private String email;
     private String activationCode;
+    @Column(columnDefinition="BOOLEAN DEFAULT false")
     private boolean activated;
 
 
