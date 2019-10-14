@@ -32,7 +32,7 @@ public class User {
     @Column(nullable = false)
     private String email;
     private String activationCode;
-    @Column(columnDefinition="BOOLEAN DEFAULT false")
+    @Column()
     private boolean activated;
 
 
