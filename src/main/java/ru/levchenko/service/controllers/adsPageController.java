@@ -1,9 +1,11 @@
 package ru.levchenko.service.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.levchenko.service.models.Product;
@@ -13,11 +15,14 @@ import ru.levchenko.service.repositories.ProductsRepository;
 import ru.levchenko.service.security.details.UserDetailsImpl;
 import ru.levchenko.service.services.CreateAdsService;
 
+import javax.validation.Valid;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/adsPage")
@@ -29,10 +34,7 @@ public class adsPageController {
     ProductsRepository productsRepository;
 
     @GetMapping
-    public String getAdsPage(Model model) {
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userDetails.getUser();
+    public String getAdsPage(Model model, @AuthenticationPrincipal User user) {
 
         List<Product> productList = productsRepository.findAllByStatusAndOwner(State.ACTIVE, user);
 
@@ -49,7 +51,7 @@ public class adsPageController {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
 
-        List<Product> productList = productsRepository.findAllByStatusAndOwner(State.ACTIVE, user);
+        List<Product> productList = productsRepository.findAllByStatus(State.ACTIVE);
 
         if (!productList.isEmpty()) {
             model.addAttribute("productList", productList);
@@ -64,13 +66,14 @@ public class adsPageController {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDetails.getUser();
 
-        List<Product> productList = productsRepository.findAllByStatusAndOwner(State.DELETED, user);
+        List<Product> productList = productsRepository.findAllByStatus(State.DELETED);
         model.addAttribute("message", "Нет закрытых объявлений");
         if (!productList.isEmpty()) {
             model.addAttribute("productList", productList);
         }
         return "adsPage";
     }
+
     @PostMapping("delete/{id}")
     public String createProduct(@PathVariable(value = "id") Long id) {
         Optional<Product> productCandidate = productsRepository.findById(id);
@@ -81,7 +84,6 @@ public class adsPageController {
     }
 
 
-
     @GetMapping("create")
     public String getCreateAdsPage() {
         return "createAds";
@@ -89,38 +91,24 @@ public class adsPageController {
 
 
     @PostMapping("create")
-    public String createProduct(@RequestParam(value = "id", required = false) Long id,
-                                @RequestParam("file") MultipartFile file,
-                                @RequestParam Map<String, String> form) {
+    public String createProduct(@Valid Product product,
+                                BindingResult bindingResult,
+                                Model model,
+                                @RequestParam("file") MultipartFile file) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDetails.getUser();
+        product.setOwner(user);
 
-        int price = Integer.parseInt(form.get("price"));
+        if (bindingResult.hasErrors()) {
 
-        Product product = new Product();
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("product", product);
+            return "createAds";
+        } else
 
-        if (id != null) {
-
-            product = productsRepository.getOne(id);
-            product.setDescription(form.get("description"));
-            product.setName(form.get("name"));
-            product.setPrice(price);
-
-        } else {
-
-            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = userDetails.getUser();
-
-            if (user == null) {
-                return "redirect:/adsPage";
-            }
-            product = Product.builder()
-                    .name(form.get("name"))
-                    .description(form.get("description"))
-                    .price(price)
-                    .owner(user)
-                    .status(State.ACTIVE)
-                    .date(new Date(Calendar.getInstance().getTime().getTime()))
-                    .build();
-        }
+            product.setStatus(State.ACTIVE);
+        product.setDate(new Date(Calendar.getInstance().getTime().getTime()));
 
         if (!file.isEmpty()) {
             createAdsService.update(file, product);
@@ -132,19 +120,53 @@ public class adsPageController {
     }
 
 
-
-
     @GetMapping("edit/{product-id}")
-    public String editPage(@PathVariable("product-id") Long productId, Model model){
-
+    public String getEditPage(@PathVariable("product-id") Long productId,
+                              Model model) {
         Optional<Product> productCandidate = productsRepository.findById(productId);
-        if(productCandidate.isPresent()){
+        if (productCandidate.isPresent()) {
             Product product = productCandidate.get();
             model.addAttribute("product", product);
             return "editPage";
-        }else {
+        } else {
             return "redirect:/adsPage";
         }
 
     }
+
+    @PostMapping("edit/{product-id}")
+    public String postEditPage(@PathVariable("product-id") Long productId,
+                               @Valid Product validProduct,
+                               BindingResult bindingResult,
+                               Model model,
+                               @RequestParam("file") MultipartFile file) {
+
+        Product product = productsRepository.getOne(productId);
+
+        product.setName(validProduct.getName());
+        product.setPrice(validProduct.getPrice());
+        product.setDescription(validProduct.getDescription());
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("product", product);
+            return "editPage";
+
+        } else {
+
+            if (!file.isEmpty()) {
+                createAdsService.update(file,product);
+                return "redirect:/adsPage";
+            } else {
+                productsRepository.save(product);
+                return "redirect:/adsPage";
+            }
+
+        }
+
+    }
+
 }
+
+

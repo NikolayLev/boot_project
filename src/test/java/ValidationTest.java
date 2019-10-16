@@ -3,6 +3,8 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.levchenko.service.services.SignUpService;
 import ru.levchenko.service.services.SignUpServiceImpl;
+import ru.levchenko.service.services.ValidationService;
+import ru.levchenko.service.services.ValidationServiceImpl;
 
 import java.util.Arrays;
 
@@ -23,11 +25,11 @@ public class ValidationTest {
 
     private static final String[] VALID_PASSWORD = new String[]{"age,rto.lke","ASDadfasfq12","12345678","qazwsxcde","^&^%$@ASfSA."};
     private static final String[] INVALID_PASSWORD = new String[]{"aefert","Привет123","123456789012345678","asd asd152","^&^%$@ASfSA<>."};
-    private SignUpService signUpService;
+    private ValidationService validationService;
 
     @Before
     public void setUp(){
-        signUpService = new SignUpServiceImpl();
+        validationService = new ValidationServiceImpl();
     }
 
 
@@ -36,7 +38,7 @@ public class ValidationTest {
         Arrays.stream(VALID_EMAILS).forEach(email-> {
 
             System.out.println(email);
-            Assert.assertTrue(signUpService.checkEmail(email));
+            Assert.assertTrue(validationService.checkEmail(email));
 
         });
 
@@ -46,7 +48,7 @@ public class ValidationTest {
         Arrays.stream(INVALID_EMAILS).forEach(email-> {
 
             System.out.println(email);
-            Assert.assertFalse(signUpService.checkEmail(email));
+            Assert.assertFalse(validationService.checkEmail(email));
 
         });
     }
@@ -56,7 +58,7 @@ public class ValidationTest {
         Arrays.stream(VALID_LOGIN).forEach(login-> {
 
             System.out.println(login);
-            Assert.assertTrue(signUpService.checkLogin(login));
+            Assert.assertTrue(validationService.checkLogin(login));
 
         });
 
@@ -66,7 +68,7 @@ public class ValidationTest {
         Arrays.stream(INVALID_LOGIN).forEach(login-> {
 
             System.out.println(login);
-            Assert.assertFalse(signUpService.checkLogin(login));
+            Assert.assertFalse(validationService.checkLogin(login));
 
         });
 
@@ -76,7 +78,7 @@ public class ValidationTest {
         Arrays.stream(VALID_PASSWORD).forEach(password-> {
 
             System.out.println(password);
-            Assert.assertTrue(signUpService.checkPassword(password));
+            Assert.assertTrue(validationService.checkPassword(password));
 
         });
 
@@ -86,7 +88,7 @@ public class ValidationTest {
         Arrays.stream(INVALID_PASSWORD).forEach(password-> {
 
             System.out.println(password);
-            Assert.assertFalse(signUpService.checkPassword(password));
+            Assert.assertFalse(validationService.checkPassword(password));
 
         });
 

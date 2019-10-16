@@ -33,7 +33,7 @@
     <div class="col-sm-4">
 
         <label>
-            <a href="/adsPage/active">Активные объявления:</a> Активные>
+            <a href="/adsPage/active">Активные объявления:</a> Активные
         </label>
         <label>
             <a href="/adsPage/delete">Закрытые объявления:</a> Закрытые

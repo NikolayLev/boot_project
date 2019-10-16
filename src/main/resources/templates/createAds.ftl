@@ -50,28 +50,48 @@
         </div>
         <div class="col-lg">
             <form method="POST" enctype="multipart/form-data" action="/adsPage/create">
-                <input type="text" hidden name="error"/>
+
 
                 <div class="form-group row pt-3">
                     <label for="name" class="col-sm-3 col-form-label">Название</label>
                     <div class="col">
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Введите название для объявления">
+                        <input type="text" class="form-control ${(nameError??)?string('is-invalid','')}"
+                               <#if product??>value="${product.name}"</#if> name="name" id="name" placeholder="Введите название для объявления">
+                        <#if nameError??>
+                            <div class="invalid-feedback">
+                            ${nameError}
+                        </div>
+                        </#if>
                     </div>
                 </div>
                 <div class="form-group row pt-1">
                     <label for="price" class="col-sm-3 col-form-label">Цена</label>
                     <div class="col-sm-3">
-                        <input type="number" min="0" class="form-control" name="price" id="price" placeholder="Цена">
+                        <input type="number" min="0" class="form-control ${(priceError??)?string('is-invalid','')}"
+                              <#if product??> <#if product.price??>value="#{product.price}"</#if> </#if> name="price" id="price" placeholder="Цена">
+                        <#if priceError??>
+                        <div class="invalid-feedback">
+                            ${priceError}
+                        </div>
+                        </#if>
                     </div>
                 </div>
+
                 <div class="form-group pt-1">
                     <label for="description">Описание для товара</label>
-                    <textarea class="form-control" id="description" rows="9" name="description"
-                              placeholder="Описание товара"></textarea>
+                    <textarea class="form-control  ${(descriptionError??)?string('is-invalid','')}"
+                              id="description" rows="9" name="description"
+                              <#if product??> value="${product.description}"</#if> placeholder="Описание товара"></textarea>
+                    <#if descriptionError??>
+                        <div class="invalid-feedback">
+                            ${descriptionError}
+                        </div>
+                    </#if>
                 </div>
 
                 <div class="container">
-                    <div class="row"><label>Загрузить изображение : </label><input type="file" id="file" name="file"/>
+                    <label>Загрузить изображение : </label>
+                    <input type="file" id="file" <#if file??> value="${file}"  </#if> name="file"/>
                         <button type="submit" class="btn ml-auto btn-primary">Создать</button></div>
                     <div class="row"><span id="output"></span></div>
 

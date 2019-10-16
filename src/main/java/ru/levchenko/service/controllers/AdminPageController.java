@@ -47,9 +47,7 @@ public class AdminPageController {
 
         adminPageService.editUser(form,id);
 
-
         return "redirect:/adminPage";
-
 
     }
 

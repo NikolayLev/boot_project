@@ -58,6 +58,30 @@
 
                     </div>
                 </div>
+
+                <#if errEmail??>
+                    <div class="alert alert-danger" role="alert">Email введен некорректно</div>
+
+                </#if>
+                <div class="form-group row my-1">
+                    <label for="colFormLabel" class="col-sm-5  col-form-label">Email</label>
+                    <div class="col-form-label">
+                        <input type="text" class="form-control" name="email" value="${user1.email}">
+
+                    </div>
+                </div>
+                <#if errPass??>
+                    <div class="alert alert-danger" role="alert">Пароль введен некорректно. Введите от 8 до 16 символов(Английские буквы, цифры, символы)</div>
+                    <br>
+                </#if>
+                <div class="form-group row my-1">
+                    <label for="colFormLabel" class="col-sm-5  col-form-label">Пароль</label>
+                    <div class="col-form-label">
+                        <input type="text" class="form-control" name="password" value="">
+
+                    </div>
+                </div>
+
                 <div class="form-group row my-1 pl-3 mt-2">
                     <button type="submit" class="btn btn-primary">Изменить</button>
                 </div>

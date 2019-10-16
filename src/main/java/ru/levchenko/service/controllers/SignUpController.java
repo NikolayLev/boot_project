@@ -3,13 +3,16 @@ package ru.levchenko.service.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.levchenko.service.security.forms.UserForm;
+import ru.levchenko.service.models.User;
 import ru.levchenko.service.services.SignUpService;
+import ru.levchenko.service.services.ValidationService;
 
 
+import javax.validation.Valid;
 import java.util.Map;
 
 
@@ -18,40 +21,32 @@ public class SignUpController {
 
     @Autowired
     private SignUpService service;
+    @Autowired
+    private ValidationService validationService;
 
     @GetMapping("/signUp")
-    public String getSignUpPage() {
+    public String getSignUpPage(Model model) {
+        model.addAttribute("user", new User());
         return "signUp";
     }
 
     @PostMapping("/signUp")
-    public String signUp(UserForm userForm, Map<String, Object> model) {
-        boolean formWriteIn = true;
+    public String signUp(@Valid User user, BindingResult bindingResult, Model model) {
 
-        if(!service.checkLogin(userForm.getLogin())){
-            formWriteIn = false;
-            model.put("invalidLogin", true);
-        }
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
 
-        if (!service.checkPassword(userForm.getPassword())){
-            formWriteIn = false;
-            model.put("invalidPassword", true);
-        }
-        if(!service.checkEmail(userForm.getEmail())){
-            formWriteIn = false;
-            model.put("invalidEmail", true);
-        }
-        if(!formWriteIn){
             return "signUp";
-        }
+        } else {
 
-
-        if (!service.signUp(userForm)) {
-            model.put("message", "User с таким логином уже есть в базе");
-            return "signUp";
+            if (!service.signUp(user)) {
+                model.addAttribute("message", "User с таким логином уже есть в базе");
+                return "signUp";
+            }
+            model.addAttribute("message", "Проверьте ваш емейл");
+            return "login";
         }
-        model.put("message", "Проверьте ваш емейл");
-        return "login";
     }
 
     @GetMapping("/activate/{code}")

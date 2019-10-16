@@ -12,8 +12,6 @@ import ru.levchenko.service.services.email.EmailSender;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class SignUpServiceImpl implements SignUpService {
@@ -26,6 +24,31 @@ public class SignUpServiceImpl implements SignUpService {
     @Autowired
     EmailSender emailSender;
 
+    public boolean signUp(User user) {
+        if (findByUserName(user.getLogin()).isPresent()) {
+            return false;
+        }
+        user.setHashPassword(passwordEncoder.encode(user.getPassword()));
+        user.setState(State.ACTIVE);
+        user.setRole(Role.USER);
+        user.setUploadPhoto("bd027e654c2fbb9f100e372dc2156d4d.jpg");
+        user.setActivationCode(UUID.randomUUID().toString());
+        usersRepository.save(user);
+
+        String message = String.format(
+                "Hello, %s! \n" +
+                        "Welcome on our test MarketPlace. Please visit next link for finish registration \n" +
+                        "http://localhost/activate/%s",
+                user.getLogin(),
+                user.getActivationCode()
+        );
+
+        emailSender.send(user.getEmail(),"Registration", message);
+
+        return true;
+
+    }
+
     public boolean signUp(UserForm userForm) {
         if (findByUserName(userForm.getLogin()).isPresent()) {
             return false;
@@ -33,7 +56,7 @@ public class SignUpServiceImpl implements SignUpService {
 
         User user = User.builder()
                 .login(userForm.getLogin())
-                .hashPassword(passwordEncoder.encode(userForm.getPassword()))
+                .password(passwordEncoder.encode(userForm.getPassword()))
                 .firstName(userForm.getFirstName())
                 .lastName(userForm.getLastName())
                 .state(State.ACTIVE)
@@ -58,24 +81,6 @@ public class SignUpServiceImpl implements SignUpService {
 
     }
 
-    @Override
-    public boolean checkEmail(String email) {
-        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-        return email.matches(pattern.pattern());
-    }
-
-    @Override
-    public boolean checkLogin(String login) {
-        Pattern pattern = Pattern.compile("[a-zA-Z0-9]{4,16}");
-        return login.matches(pattern.pattern());
-    }
-
-    @Override
-    public boolean checkPassword(String password) {
-        Pattern pattern = Pattern.compile("[._a-zA-Z0-9!#$@%&,:;'\"'*+-/=?^_`{|}~\\.]{8,16}");
-        return password.matches(pattern.pattern());
-    }
 
     @Override
     public boolean activateUser(String code) {
