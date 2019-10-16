@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="/css/styles.css" rel="stylesheet">
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -81,6 +83,19 @@
                     </#if>
                 </div>
             </div>
+            <div class="form-group row">
+                <label for="passwordConfirm" class="col-sm-1 col-form-label">Пароль 2</label>
+                <div class="col-lm-5">
+                    <input class="form-control ${(passwordConfirmError??)?string('is-invalid','')}" type="password"
+                           placeholder="Повторите пароль" id="passwordConfirm" name="passwordConfirm">
+
+                    <#if passwordConfirmError??>
+                        <div class="invalid-feedback">
+                            ${passwordConfirmError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
 
 
             <div class="form-group row">
@@ -97,14 +112,24 @@
                 <div class="col-lm-5">
                     <input class="form-control" type="text" id="lastName" name="lastName">
                 </div>
+
             </div>
+            <div class="g-recaptcha" data-sitekey="6LcBBL4UAAAAAMQrvksrMKyvmWh9Vnngs7Ba1rPC"></div>
+            <#if captchaError??>
+                <div class="alert alert-danger" role="alert">
+                    ${captchaError}
+                </div>
+            </#if>
+
 
             <div class="form-group row">
                 <button class="btn btn-primary col-lm-5 mr-1" type="submit">SignUp!</button>
             </div>
         </div>
+
     </form>
 </div>
+
 
 </div>
 </div>
