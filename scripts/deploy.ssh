@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+mvn clean package
+
+echo 'Copy files...'
+
+scp -i ~/.ssh/id_rsa \
+    target/springboot-service-1.0.jar \
+    koliannn@192.168.56.101:/home/koliannn/
+
+echo 'Restart server...'
+
+ssh -i ~/.ssh/id_rsa koliannn@192.168.56.101 << EOF
+pgrep java | xargs kill -9
+nohup java -jar springboot-service-1.0.jar > log.txt &
+EOF
+
+echo 'Bye'

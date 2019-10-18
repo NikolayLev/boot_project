@@ -38,7 +38,7 @@ public class SignUpServiceImpl implements SignUpService {
         String message = String.format(
                 "Hello, %s! \n" +
                         "Welcome on our test MarketPlace. Please visit next link for finish registration \n" +
-                        "http://localhost/activate/%s",
+                        "http://localhost:8080/activate/%s",
                 user.getLogin(),
                 user.getActivationCode()
         );
