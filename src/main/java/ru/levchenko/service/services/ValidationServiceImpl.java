@@ -3,7 +3,10 @@ package ru.levchenko.service.services;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
-//кастомная валидация данных
+
+/**
+ * custom validation for form sign in/up, profile pages
+ */
 @Service
 public class ValidationServiceImpl implements ValidationService {
 

@@ -16,7 +16,6 @@ import java.util.Properties;
 /**
  * Class config for Spring MVC
  */
-
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
