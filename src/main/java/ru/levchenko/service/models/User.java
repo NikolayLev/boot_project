@@ -10,6 +10,10 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
+/**
+ * User pojo mapping via Hibernate
+ * for validate login,password and email use bean validation
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

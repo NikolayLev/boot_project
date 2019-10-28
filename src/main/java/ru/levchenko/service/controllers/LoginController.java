@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * login page controller  - return sign in page
+ */
 @Controller
 public class LoginController {
     @GetMapping("/login")

@@ -15,17 +15,23 @@ import org.springframework.web.client.RestTemplate;
 import ru.levchenko.service.models.User;
 import ru.levchenko.service.models.dto.CaptchaResponseDto;
 import ru.levchenko.service.services.SignUpService;
-import ru.levchenko.service.services.ValidationService;
 
 
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * Controller for SignUp page
+ * in sign up we validate email, login, password from new user and google captcha
+ * for complete registration need activate user account, we send mail with information about activation him account
+ */
 
 @Controller
 public class SignUpController {
-
+    /**
+     * captcha properties
+     */
     @Value("${recaptcha.secret}")
     private String recaptchaSecret;
     @Value("${recaptcha.url}")
@@ -36,11 +42,9 @@ public class SignUpController {
 
     @Autowired
     private SignUpService service;
-    @Autowired
-    private ValidationService validationService;
 
     @GetMapping("/signUp")
-    public String getSignUpPage(Authentication authentication,Model model) {
+    public String getSignUpPage(Authentication authentication, Model model) {
         if (authentication != null) {
             return "redirect:/";
         }
@@ -48,6 +52,15 @@ public class SignUpController {
         return "signUp";
     }
 
+    /**
+     *
+     * @param recaptchaResponse google recaptcha response
+     * @param passwordConfirm secondPassword form for confirm correctness user password
+     * @param user validation for new user
+     * @param bindingResult
+     * @param model
+     * @return
+     */
     @PostMapping("/signUp")
     public String signUp(
             @RequestParam("g-recaptcha-response") String recaptchaResponse,
@@ -56,17 +69,17 @@ public class SignUpController {
             BindingResult bindingResult,
             Model model) {
 
-        String url = String.format(recaptchaPost,recaptchaSecret,recaptchaResponse);
-        CaptchaResponseDto captchaResponse= restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
+        String url = String.format(recaptchaPost, recaptchaSecret, recaptchaResponse);
+        CaptchaResponseDto captchaResponse = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
 
-        if (!captchaResponse.isSuccess()){
+        if (!captchaResponse.isSuccess()) {
             model.addAttribute("captchaError", "Убить всех человеков...10111001 ");
         }
 
 
         boolean isConfirmed = !StringUtils.isEmpty(passwordConfirm);
-        if (!user.getPassword().equals(passwordConfirm)){
-            isConfirmed=false;
+        if (!user.getPassword().equals(passwordConfirm)) {
+            isConfirmed = false;
         }
 
         if (!isConfirmed || bindingResult.hasErrors() || !captchaResponse.isSuccess()) {
@@ -86,6 +99,11 @@ public class SignUpController {
         }
     }
 
+    /**
+     * @param model information about status for user account
+     * @param code  unique code for complete registration/ code we send with activation link on user email
+     * @return login if user complete activation him account
+     */
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code) {
         boolean isActivated = service.activateUser(code);

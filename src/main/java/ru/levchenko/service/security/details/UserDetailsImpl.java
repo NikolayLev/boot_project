@@ -9,6 +9,9 @@ import ru.levchenko.service.models.User;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * user details for Spring security
+ */
 public class UserDetailsImpl implements UserDetails {
 
     private User user;

@@ -7,6 +7,11 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+/**
+ * utils for field validation
+ * used in pages which are used bean validation
+ * return map with Errors
+ */
 public class ControllerUtils {
 
     static Map<String, String> getErrors(BindingResult bindingResult){

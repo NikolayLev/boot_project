@@ -29,41 +29,42 @@
 </div>
 
 <div class="container mt-2">
-    <div class= "row">
-    <div class="col-sm-4">
+    <div class="row">
+        <div class="col-sm-4">
 
-        <label>
-            <a href="/adsPage/active">Активные объявления:</a> Активные
-        </label>
-        <label>
-            <a href="/adsPage/delete">Закрытые объявления:</a> Закрытые
-        </label>
+            <label>
+                <a href="/adsPage/active">Активные объявления:</a> Активные
+            </label>
+            <label>
+                <a href="/adsPage/delete">Закрытые объявления:</a> Закрытые
+            </label>
 
 
-</div>
-<div class="col-sm-8">
+        </div>
+        <div class="col-sm-8">
 
-    <#if productList??>
-        <#list productList as product>
+            <#if productList??>
+                <#list productList as product>
 
-            <a href="/adsPage/edit/${product.id}" class="btn btn-secondary btn btn-block">
-                <i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> ${product.name}
-            </a>
-            <#if product.fileName??>
-            <img src="/img/product/${product.fileName}" class="img-fluid rounded mx-auto d-block" alt="Responsive image">
-    </#if>
+                    <a href="/adsPage/edit/${product.id}" class="btn btn-secondary btn btn-block">
+                        <i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> ${product.name}
+                    </a>
+                    <#if product.fileName??>
+                        <img src="/img/product/${product.fileName}" class="img-fluid rounded mx-auto d-block"
+                             alt="Responsive image">
+                    </#if>
 
-    <div  class="border border-secondary">
-            <p class="font-weight-bolder">Описание:</p>
-            <span style="white-space: pre-line">${product.description}</span></div>
+                    <div class="border border-secondary">
+                        <p class="font-weight-bolder">Описание:</p>
+                        <span style="white-space: pre-line">${product.description}</span></div>
 
-            <p class="font-weight-bolder mt-2"> Цена: ${product.price}руб. </p>
-            <p class="text-right">${product.date}</p>
-        </#list>
+                    <p class="font-weight-bolder mt-2"> Цена: ${product.price}руб. </p>
+                    <p class="text-right">${product.date}</p>
+                </#list>
             <#else>
                 ${message}
-        </#if>
-</div>
+            </#if>
+        </div>
 
     </div>
 </div>

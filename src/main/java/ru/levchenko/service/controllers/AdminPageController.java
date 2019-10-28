@@ -13,7 +13,13 @@ import ru.levchenko.service.services.AdminPageService;
 
 import java.util.Map;
 
-
+/**
+ * Controller for AdminPage
+ * /adminPage return page only for Admins
+ * Admins can ban/unban users in /adminPage
+ * Admins can see all users in our application
+ * Admins can change user data
+ */
 @Controller
 @RequestMapping("adminPage")
 @PreAuthorize("hasAuthority('ADMIN')")
@@ -45,7 +51,7 @@ public class AdminPageController {
             @RequestParam Map<String, String> form,
             @RequestParam("userId") Long id) {
 
-        adminPageService.editUser(form,id);
+        adminPageService.editUser(form, id);
 
         return "redirect:/adminPage";
 

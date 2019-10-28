@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.Set;
 
+/**
+ * Dto for google captcha
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class CaptchaResponseDto {

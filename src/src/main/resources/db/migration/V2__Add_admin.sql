@@ -1,1 +1,0 @@
-insert into users (activated, activation_code, email, first_name, hash_passwordAD, last_name, login, role, state, uploadphoto) values (true, null, 'niko.original2@gmail.com', 'Николай Левченко', '$2a$10$ikX1GP0N0nXCVXOx52R9cePoXSfH1gT4bOS7tbVY7eIJrtnry3OcC', 'Левченко', 'admin', 'ADMIN', 'ACTIVE','bd027e654c2fbb9f100e372dc2156d4d.jpg')

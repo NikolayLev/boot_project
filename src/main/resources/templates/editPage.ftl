@@ -51,14 +51,16 @@
         <div class="col-lg">
             <form method="POST" enctype="multipart/form-data" action="/adsPage/edit/${product.id}">
                 <input type="text" hidden name="error"/>
-                <#if product.fileName??><img src="/img/product/${product.fileName}" class="img-fluid rounded mx-auto d-block pt-2"
-                     alt="Responsive image">
+                <#if product.fileName??><img src="/img/product/${product.fileName}"
+                                             class="img-fluid rounded mx-auto d-block pt-2"
+                                             alt="Responsive image">
                 </#if>
                 <div class="form-group row pt-3">
                     <label for="name" class="col-sm-3 col-form-label">Название</label>
                     <div class="col">
 
-                        <input type="text" class="form-control ${(nameError??)?string('is-invalid','')}" name="name" id="name" value="${product.name}"
+                        <input type="text" class="form-control ${(nameError??)?string('is-invalid','')}" name="name"
+                               id="name" value="${product.name}"
                                placeholder="Введите название для объявления">
                         <#if nameError??>
                             <div class="invalid-feedback">
@@ -70,8 +72,9 @@
                 <div class="form-group row pt-1">
                     <label for="price" class="col-sm-3 col-form-label">Цена</label>
                     <div class="col-sm-3">
-                        <input type="number" min="0" class="form-control ${(priceError??)?string('is-invalid','')}" name="price"
-                               <#if product.price??> value="#{product.price}"</#if> id="price" placeholder="Цена">
+                        <input type="number" min="0" class="form-control ${(priceError??)?string('is-invalid','')}"
+                               name="price"
+                                <#if product.price??> value="#{product.price}"</#if> id="price" placeholder="Цена">
                         <#if priceError??>
                             <div class="invalid-feedback">
                                 ${priceError}
@@ -81,7 +84,8 @@
                 </div>
                 <div class="form-group pt-1">
                     <label for="description">Описание для товара</label>
-                    <textarea class="form-control ${(descriptionError??)?string('is-invalid','')}" id="description" rows="9" name="description"
+                    <textarea class="form-control ${(descriptionError??)?string('is-invalid','')}" id="description"
+                              rows="9" name="description"
                               placeholder="Описание товара">${product.description}</textarea>
                     <#if descriptionError??>
                         <div class="invalid-feedback">
@@ -97,6 +101,7 @@
 
                     </div>
                 </div>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             </form>
 
             <form action="/adsPage/delete/${product.id}" method="post">
@@ -108,6 +113,7 @@
                     <span id="output"></span>
 
                 </div>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             </form>
         </div>
     </div>
