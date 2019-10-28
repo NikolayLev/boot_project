@@ -37,58 +37,60 @@
         </div>
         <div class="row">
             <div class="container mt-3">
-            <form method="POST" enctype="multipart/form-data" action="/profile">
-                <#if image??>Изменить <#else> Добавить </#if> аватар:
-                <div class="form-group">
-                    <input type="file" id="file" name="file"/>
-                    <span id="output"></span></div>
+                <form method="POST" enctype="multipart/form-data" action="/profile">
+                    <#if image??>Изменить <#else> Добавить </#if> аватар:
+                    <div class="form-group">
+                        <input type="file" id="file" name="file"/>
+                        <span id="output"></span></div>
 
 
-
-                <div class="form-group row my-1">
-                    <label for="colFormLabel" class="col-sm-5 col-form-label">Имя</label>
-                    <div class="col-form-label">
-                        <input type="text" class="form-control" name="firstName" value="${user1.firstName}">
+                    <div class="form-group row my-1">
+                        <label for="colFormLabel" class="col-sm-5 col-form-label">Имя</label>
+                        <div class="col-form-label">
+                            <input type="text" class="form-control" name="firstName" value="${user1.firstName}">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row my-1">
-                    <label for="colFormLabel" class="col-sm-5  col-form-label">Фамилия</label>
-                    <div class="col-form-label">
-                        <input type="text" class="form-control" name="lastName" value="${user1.lastName}">
+                    <div class="form-group row my-1">
+                        <label for="colFormLabel" class="col-sm-5  col-form-label">Фамилия</label>
+                        <div class="col-form-label">
+                            <input type="text" class="form-control" name="lastName" value="${user1.lastName}">
 
+                        </div>
                     </div>
-                </div>
 
-                <#if errEmail??>
-                    <div class="alert alert-danger" role="alert">Email введен некорректно</div>
+                    <#if errEmail??>
+                        <div class="alert alert-danger" role="alert">Email введен некорректно</div>
 
-                </#if>
-                <div class="form-group row my-1">
-                    <label for="colFormLabel" class="col-sm-5  col-form-label">Email</label>
-                    <div class="col-form-label">
-                        <input type="text" class="form-control" name="email" value="${user1.email}">
+                    </#if>
+                    <div class="form-group row my-1">
+                        <label for="colFormLabel" class="col-sm-5  col-form-label">Email</label>
+                        <div class="col-form-label">
+                            <input type="text" class="form-control" name="email" value="${user1.email}">
 
+                        </div>
                     </div>
-                </div>
-                <#if errPass??>
-                    <div class="alert alert-danger" role="alert">Пароль введен некорректно. Введите от 8 до 16 символов(Английские буквы, цифры, символы)</div>
-                    <br>
-                </#if>
-                <div class="form-group row my-1">
-                    <label for="colFormLabel" class="col-sm-5  col-form-label">Пароль</label>
-                    <div class="col-form-label">
-                        <input type="text" class="form-control" name="password" value="">
+                    <#if errPass??>
+                        <div class="alert alert-danger" role="alert">Пароль введен некорректно. Введите от 8 до 16
+                            символов(Английские буквы, цифры, символы)
+                        </div>
+                        <br>
+                    </#if>
+                    <div class="form-group row my-1">
+                        <label for="colFormLabel" class="col-sm-5  col-form-label">Пароль</label>
+                        <div class="col-form-label">
+                            <input type="text" class="form-control" name="password" value="">
 
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group row my-1 pl-3 mt-2">
-                    <button type="submit" class="btn btn-primary">Изменить</button>
-                </div>
-            </form>
+                    <div class="form-group row my-1 pl-3 mt-2">
+                        <button type="submit" class="btn btn-primary">Изменить</button>
+                    </div>
+                    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                </form>
 
 
-        </div>
+            </div>
 
         </div>
     </div>

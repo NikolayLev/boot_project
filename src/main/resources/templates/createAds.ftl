@@ -36,7 +36,7 @@
 </div>
 
 <div class="container">
-    <div class= "row">
+    <div class="row">
         <div class="col-sm-4">
 
             <label>
@@ -56,11 +56,12 @@
                     <label for="name" class="col-sm-3 col-form-label">Название</label>
                     <div class="col">
                         <input type="text" class="form-control ${(nameError??)?string('is-invalid','')}"
-                               <#if product??>value="${product.name}"</#if> name="name" id="name" placeholder="Введите название для объявления">
+                               <#if product??>value="${product.name}"</#if> name="name" id="name"
+                               placeholder="Введите название для объявления">
                         <#if nameError??>
                             <div class="invalid-feedback">
-                            ${nameError}
-                        </div>
+                                ${nameError}
+                            </div>
                         </#if>
                     </div>
                 </div>
@@ -68,11 +69,12 @@
                     <label for="price" class="col-sm-3 col-form-label">Цена</label>
                     <div class="col-sm-3">
                         <input type="number" min="0" class="form-control ${(priceError??)?string('is-invalid','')}"
-                              <#if product??> <#if product.price??>value="#{product.price}"</#if> </#if> name="price" id="price" placeholder="Цена">
+                                <#if product??> <#if product.price??>value="#{product.price}"</#if> </#if> name="price"
+                               id="price" placeholder="Цена">
                         <#if priceError??>
-                        <div class="invalid-feedback">
-                            ${priceError}
-                        </div>
+                            <div class="invalid-feedback">
+                                ${priceError}
+                            </div>
                         </#if>
                     </div>
                 </div>
@@ -92,10 +94,11 @@
                 <div class="container">
                     <label>Загрузить изображение : </label>
                     <input type="file" id="file" <#if file??> value="${file}"  </#if> name="file"/>
-                        <button type="submit" class="btn ml-auto btn-primary">Создать</button></div>
-                    <div class="row"><span id="output"></span></div>
-
+                    <button type="submit" class="btn ml-auto btn-primary">Создать</button>
                 </div>
+                <div class="row"><span id="output"></span></div>
+
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             </form>
         </div>
     </div>
@@ -110,7 +113,7 @@
         if (!f.type.match('image.*')) {
             alert("Только изображения....");
             document.getElementById('file').value = null;
-            document.getElementById('output').innerHTML="";
+            document.getElementById('output').innerHTML = "";
         } else {
 
             var reader = new FileReader();

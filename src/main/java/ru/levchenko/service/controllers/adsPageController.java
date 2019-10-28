@@ -21,9 +21,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
+
+/**
+ * Controllers for /adsPage/*
+ * /adsPage return for user list ads
+ * /adsPage/active return active ads
+ * /adsPage/delete return deleted ads
+ * /adsPage/create return create ad page
+ * /adsPage/edit{id-Ad} return edit page
+ */
 @Controller
 @RequestMapping("/adsPage")
 public class adsPageController {
@@ -48,8 +55,6 @@ public class adsPageController {
 
     @GetMapping("active")
     public String getActivePage(Model model) {
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userDetails.getUser();
 
         List<Product> productList = productsRepository.findAllByStatus(State.ACTIVE);
 
@@ -62,9 +67,6 @@ public class adsPageController {
 
     @GetMapping("delete")
     public String getDeletePage(Model model) {
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userDetails.getUser();
 
         List<Product> productList = productsRepository.findAllByStatus(State.DELETED);
         model.addAttribute("message", "Нет закрытых объявлений");
@@ -156,7 +158,7 @@ public class adsPageController {
         } else {
 
             if (!file.isEmpty()) {
-                createAdsService.update(file,product);
+                createAdsService.update(file, product);
                 return "redirect:/adsPage";
             } else {
                 productsRepository.save(product);

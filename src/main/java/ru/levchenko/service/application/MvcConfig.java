@@ -13,12 +13,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Properties;
 
+/**
+ * Class config for Spring MVC
+ */
+
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
+    /**
+     * Path for user files(images)
+     */
     @Value("${upload.path}")
     private String uploadPath;
 
+    /**
+     * properties for Emails Sender
+     * ALL properties u can see in \src\main\resources\application.properties
+     */
     @Value("${spring.mail.host}")
     private String host;
     @Value("${spring.mail.username}")
@@ -32,17 +43,9 @@ public class MvcConfig implements WebMvcConfigurer {
     @Value("${mail.debug}")
     private String debug;
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/img/**")
-                .addResourceLocations("file://"+uploadPath+"/");
-    }
-
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+    /**
+     *Bean with complete configuration for Emails Sender
+     */
     @Bean
     public JavaMailSender javaMailSender(){
 
@@ -59,6 +62,24 @@ public class MvcConfig implements WebMvcConfigurer {
 
         return javaMailSender;
     }
+
+    /**
+     *ResourceHandler for users images locate on path "/img/"
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/img/**")
+                .addResourceLocations("file://"+uploadPath+"/");
+    }
+
+    /**
+     *Bean PasswordEncoder for Spring security
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
 
     @Bean
     public RestTemplate getRestTemplate(){

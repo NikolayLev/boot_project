@@ -126,7 +126,7 @@
                 <button class="btn btn-primary col-lm-5 mr-1" type="submit">SignUp!</button>
             </div>
         </div>
-
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
     </form>
 </div>
 
