@@ -1,3 +1,7 @@
 # Project exclude paths
 /target/
 /.idea/
+boot_project.iml
+/files/*.jpg
+/files/*.png
+/files/
